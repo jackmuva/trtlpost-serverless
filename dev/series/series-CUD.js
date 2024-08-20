@@ -22,7 +22,7 @@ export const handler = async (event) => {
     };
 
     let dbParam= {
-        TableName: "trtlpost-series",
+        TableName: process.env.db_name,
         Item:event.item
     }
 

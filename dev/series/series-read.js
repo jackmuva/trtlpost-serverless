@@ -23,7 +23,7 @@ export const handler = async (event) => {
     try {
         switch (event.httpMethod) {
             case 'GET':
-                body = await dynamo.scan({ TableName: "trtlpost-series" });
+                body = await dynamo.scan({ TableName: process.env.db_name });
                 break;
             default:
                 throw new Error(`Unsupported method "${event.httpMethod}"`);
