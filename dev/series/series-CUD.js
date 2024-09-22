@@ -40,7 +40,7 @@ export const handler = async (event) => {
                         'series_id': series.series_id,
                         'pen_name': user.Username
                     },
-                    UpdateExpression: 'SET #cadence :cadence, #summary :summary, #title :title, #published :published, #tags :tags, #num_entries :num_entries',
+                    UpdateExpression: 'SET #cadence =:cadence, #summary =:summary, #title =:title, #published =:published, #tags =:tags, #num_entries =:num_entries',
                     ExpressionAttributeNames: {
                         '#cadence': 'cadence',
                         '#summary': 'summary',

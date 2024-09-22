@@ -35,11 +35,12 @@ export const handler = async (event) => {
                 });
                 break;
             case 'DELETE':
+                console.log("deleting");
                 body = await dynamo.delete({
                     TableName: process.env.db_name,
                     Key: {
                         'entry_id': entry.entry_id,
-                        'pen_name': user.Username
+                        'series_id': entry.series_id
                     }
                 });
                 break;
@@ -48,18 +49,20 @@ export const handler = async (event) => {
                     TableName: process.env.db_name,
                     Key: {
                         'entry_id': entry.entry_id,
-                        'pen_name': user.Username
+                        'series_id': entry.series_id
                     },
-                    UpdateExpression: 'SET #title :title, #html :html, #raw :raw',
+                    UpdateExpression: 'SET #title =:title, #html =:html, #raw =:raw, #entry_num =:entry_num',
                     ExpressionAttributeNames: {
                         '#title': 'title',
                         '#html': 'html',
                         '#raw': 'raw',
+                        '#entry_num': 'entry_num',
                     },
                     ExpressionAttributeValues: {
                         ':title': entry.title,
                         ':html': entry.html,
-                        ':raw': entry.raw
+                        ':raw': entry.raw,
+                        ':entry_num': entry.entry_num
                     },
                 });
                 break;
@@ -73,7 +76,7 @@ export const handler = async (event) => {
         body = JSON.stringify(body);
     }
 
-        return {
+    return {
         statusCode,
         body,
         headers: {
