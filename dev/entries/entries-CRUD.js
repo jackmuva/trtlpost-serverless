@@ -25,6 +25,7 @@ export const handler = async (event) => {
                     TableName: process.env.db_name,
                     Key: {
                         'entry_id': entry.entry_id,
+                        'series_id': entry.series_id
                     }
                 });
                 break;
@@ -35,7 +36,6 @@ export const handler = async (event) => {
                 });
                 break;
             case 'DELETE':
-                console.log("deleting");
                 body = await dynamo.delete({
                     TableName: process.env.db_name,
                     Key: {
