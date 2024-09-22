@@ -6,29 +6,39 @@ const client = new CognitoIdentityProviderClient({});
 const dynamo = DynamoDBDocument.from(new DynamoDB());
 
 export const handler = async (event) => {
+
     let body;
     let statusCode = '200';
-    const series = event.item;
+    const entry = event.item;
 
     const token = getToken(event);
     const user = await getUser(token);
 
     try {
-        if(user.Username !== series.pen_name){
+        if(user.Username !== entry.pen_name){
             throw new Error("Do not have access to this resource");
         }
+
         switch (event.httpMethod) {
+            case 'GET':
+                body = await dynamo.get({
+                    TableName: process.env.db_name,
+                    Key: {
+                        'entry_id': entry.entry_id,
+                    }
+                });
+                break;
             case 'POST':
                 body = await dynamo.put({
                     TableName: process.env.db_name,
-                    Item:{...series}
+                    Item:{...entry}
                 });
                 break;
             case 'DELETE':
                 body = await dynamo.delete({
                     TableName: process.env.db_name,
                     Key: {
-                        'series_id': series.series_id,
+                        'entry_id': entry.entry_id,
                         'pen_name': user.Username
                     }
                 });
@@ -37,25 +47,19 @@ export const handler = async (event) => {
                 body = await dynamo.update({
                     TableName: process.env.db_name,
                     Key: {
-                        'series_id': series.series_id,
+                        'entry_id': entry.entry_id,
                         'pen_name': user.Username
                     },
-                    UpdateExpression: 'SET #cadence :cadence, #summary :summary, #title :title, #published :published, #tags :tags, #num_entries :num_entries',
+                    UpdateExpression: 'SET #title :title, #html :html, #raw :raw',
                     ExpressionAttributeNames: {
-                        '#cadence': 'cadence',
-                        '#summary': 'summary',
                         '#title': 'title',
-                        '#published': 'published',
-                        '#tags': 'tags',
-                        '#num_entries': 'num_entries'
+                        '#html': 'html',
+                        '#raw': 'raw',
                     },
                     ExpressionAttributeValues: {
-                        ':cadence': series.cadence,
-                        ':summary': series.summary,
-                        ':title': series.title,
-                        ':published': series.published,
-                        ':tags': series.tags,
-                        ':num_entries': series.num_entries,
+                        ':title': entry.title,
+                        ':html': entry.html,
+                        ':raw': entry.raw
                     },
                 });
                 break;
@@ -69,7 +73,7 @@ export const handler = async (event) => {
         body = JSON.stringify(body);
     }
 
-    return {
+        return {
         statusCode,
         body,
         headers: {
