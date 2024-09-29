@@ -1,0 +1,9 @@
+{
+  "item": {
+    "subscription_id": "1",
+    "series_id": "1",
+    "entry_num": 2,
+    "email": "jackmuva@yahoo.com"
+  },
+  "httpMethod": "POST"
+}

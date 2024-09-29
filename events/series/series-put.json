@@ -1,0 +1,21 @@
+{
+  "httpMethod": "PUT",
+  "headers": {
+    "accesstoken": "eyJraWQiOiJTdms0RnpXaXB0ekJrOEdlZGtLcUx1dzlLZUpDT1ZyRVpZNHh1blJndTZRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI2NDA4ZDRkOC01MGYxLTcwMDMtM2Y1ZS0wNjQzZWU4OTI2MmQiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV83QVI0anlWRDQiLCJjbGllbnRfaWQiOiI3bTc1aDI2dG1ybXFuZHIzOGQ0Z3BzOGNsZSIsIm9yaWdpbl9qdGkiOiIwMTliZTE4Zi0yOTg4LTQ4ZmUtOTYwYS1hNWUzNDk4OTc0NDciLCJldmVudF9pZCI6IjgwMGNkMmZhLTVhNTktNDY3My1iZWQ1LTg1MjBiZjBhYWNlYSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3MjcwMjAyNTAsImV4cCI6MTcyNzAyMzg1MCwiaWF0IjoxNzI3MDIwMjUwLCJqdGkiOiJjYzAxODk5Yi0zMjA4LTQ3NDEtYWVlMi0yMmJiNDE0YTdkNjUiLCJ1c2VybmFtZSI6ImphY2ttdXZhIn0.Ja3fj4MxOihqPAXkuM3OmMGb96b4qVzkTawgEiFO6IhrU65m8yrq3sjD651tZGnFVuYeI8wxF-cEx72bDtlnh9jPr6sGhhvi_t5qwb1dLSEDwQqafpH3jPuW4XkIb0yiPfTzHUUJGZl77jm8MvPhEv_CibFG7K_ewL2FR0ZsRm66pNd0FMBqKEzJvfm_wXvvg-IYJyt7hRxM_KE7-dtKDcMgYmiCTArPVQY6Ki2wI_0aGGNwVRnew2TNlSiyVh0exUmzpser-Kf0ysu4QgjExChpFyMS3gNb9A9JX0fxNmuN5Ckba85Ps5gpI0uHNnSUWG2Ohq6fF1rcVtfBXM4esA"
+  },
+  "item": {
+    "series_id": "1",
+    "cadence": 5,
+    "datetime": "2024-08-18",
+    "email": "jackmu@umich.edu",
+    "num_entries": 0,
+    "pen_name": "jackmuva",
+    "published": false,
+    "summary": "summary",
+    "tags": "test",
+    "title": "test1",
+    "num_all_time_readers": 0,
+    "num_current_readers": 0,
+    "max_current_readers": 10
+  }
+}

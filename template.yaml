@@ -1,0 +1,224 @@
+# This is the SAM template that represents the architecture of your serverless application
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
+
+# The AWSTemplateFormatVersion identifies the capabilities of the template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  trtlpost-sam
+
+# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
+Transform:
+- AWS::Serverless-2016-10-31
+
+# Resources declares the AWS resources that you want to include in the stack
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
+Resources:
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  # This is a Lambda function config associated with the source code: get-all-items.js
+  EntriesCrudFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/entries/entries-CRUD.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: CRUD endpoint for entries data
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EntriesTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          db_name: !Ref EntriesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /entries/
+            Method: ANY
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  # This is a Lambda function config associated with the source code: get-by-id.js
+  SeriesCudFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/series/series-CUD.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: API to modify Series (Authentication is needed for this endpoint via jwt)
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SeriesTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          db_name: !Ref SeriesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /series/
+            Method: ANY
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  # This is a Lambda function config associated with the source code: put-item.js
+  SeriesReadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/series/series-read.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: GET endpoint for Series
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SeriesTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          db_name: !Ref SeriesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /series/getAll/
+            Method: GET
+  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+
+  # This is a Lambda function config associated with the source code: put-item.js
+  SubscriptionCrudFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/subscriptions/subscription-CRUD.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: CRUD API for Subscriptions
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscriptionTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          db_name: !Ref SubscriptionTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /subscriptions/
+            Method: ANY
+
+
+  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+  EntriesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "entry_id"
+          AttributeType: "S"
+        - AttributeName: "series_id"
+          AttributeType: "S"
+        - AttributeName: "pen_name"
+          AttributeType: "S"
+        - AttributeName: "raw"
+          AttributeType: "S"
+        - AttributeName: "html"
+          AttributeType: "S"
+        - AttributeName: "title"
+          AttributeType: "S"
+        - AttributeName: "entry_num"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "entry_id"
+          KeyType: "HASH"
+        - AttributeName: "series_id"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+      TableName: "EntriesTable"
+
+  SeriesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "series_id"
+          AttributeType: "S"
+        - AttributeName: "pen_name"
+          AttributeType: "S"
+        - AttributeName: "cadence"
+          AttributeType: "N"
+        - AttributeName: "datetime"
+          AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
+        - AttributeName: "title"
+          AttributeType: "S"
+        - AttributeName: "num_entries"
+          AttributeType: "N"
+        - AttributeName: "published"
+          AttributeType: "S"
+        - AttributeName: "summary"
+          AttributeType: "S"
+        - AttributeName: "tags"
+          AttributeType: "S"
+        - AttributeName: "num_all_time_readers"
+          AttributeType: "N"
+        - AttributeName: "num_current_readers"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "series_id"
+          KeyType: "HASH"
+        - AttributeName: "pen_name"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+      TableName: "SeriesTable"
+
+  SubscriptionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "subscription_id"
+          AttributeType: "S"
+        - AttributeName: "series_id"
+          AttributeType: "S"
+        - AttributeName: "entry_num"
+          AttributeType: "N"
+        - AttributeName: "email"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "subscription_id"
+          KeyType: "HASH"
+        - AttributeName: "email"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+      TableName: "SubscriptionTable"
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
