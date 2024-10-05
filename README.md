@@ -162,8 +162,9 @@ Next, you can use the AWS Serverless Application Repository to deploy ready-to-u
 ## Common commands
 * `sam build`
 * `sam deploy --guided`
+  * can also use ` sam deploy --config-file samconfig.toml ` to skip prompts
 * `sam list endpoints --output json`
-* `sam local invoke {function-name} --event events/{event-file.json}`
+* `sam local invoke {function-name} --event-file events/{event-file.json}`
   * can also use `remote invoke`
 * `sam sync --watch`
 * `sam local start-api`

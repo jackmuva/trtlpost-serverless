@@ -9,8 +9,7 @@ Description: >-
 
 # Transform section specifies one or more macros that AWS CloudFormation uses to process your template
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
-Transform:
-- AWS::Serverless-2016-10-31
+Transform: AWS::Serverless-2016-10-31
 
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
@@ -138,24 +137,24 @@ Resources:
           AttributeType: "S"
         - AttributeName: "series_id"
           AttributeType: "S"
-        - AttributeName: "pen_name"
-          AttributeType: "S"
-        - AttributeName: "raw"
-          AttributeType: "S"
-        - AttributeName: "html"
-          AttributeType: "S"
-        - AttributeName: "title"
-          AttributeType: "S"
-        - AttributeName: "entry_num"
-          AttributeType: "N"
+#        - AttributeName: "pen_name"
+#          AttributeType: "S"
+#        - AttributeName: "raw"
+#          AttributeType: "S"
+#        - AttributeName: "html"
+#          AttributeType: "S"
+#        - AttributeName: "title"
+#          AttributeType: "S"
+#        - AttributeName: "entry_num"
+#          AttributeType: "N"
       KeySchema:
         - AttributeName: "entry_id"
           KeyType: "HASH"
         - AttributeName: "series_id"
           KeyType: "RANGE"
       ProvisionedThroughput:
-        ReadCapacityUnits: "1"
-        WriteCapacityUnits: "1"
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
       TableName: "EntriesTable"
 
   SeriesTable:
@@ -166,34 +165,34 @@ Resources:
           AttributeType: "S"
         - AttributeName: "pen_name"
           AttributeType: "S"
-        - AttributeName: "cadence"
-          AttributeType: "N"
-        - AttributeName: "datetime"
-          AttributeType: "S"
-        - AttributeName: "email"
-          AttributeType: "S"
-        - AttributeName: "title"
-          AttributeType: "S"
-        - AttributeName: "num_entries"
-          AttributeType: "N"
-        - AttributeName: "published"
-          AttributeType: "S"
-        - AttributeName: "summary"
-          AttributeType: "S"
-        - AttributeName: "tags"
-          AttributeType: "S"
-        - AttributeName: "num_all_time_readers"
-          AttributeType: "N"
-        - AttributeName: "num_current_readers"
-          AttributeType: "N"
+#        - AttributeName: "cadence"
+#          AttributeType: "N"
+#        - AttributeName: "datetime"
+#          AttributeType: "S"
+#        - AttributeName: "email"
+#          AttributeType: "S"
+#        - AttributeName: "title"
+#          AttributeType: "S"
+#        - AttributeName: "num_entries"
+#          AttributeType: "N"
+#        - AttributeName: "published"
+#          AttributeType: "S"
+#        - AttributeName: "summary"
+#          AttributeType: "S"
+#        - AttributeName: "tags"
+#          AttributeType: "S"
+#        - AttributeName: "num_all_time_readers"
+#          AttributeType: "N"
+#        - AttributeName: "num_current_readers"
+#          AttributeType: "N"
       KeySchema:
         - AttributeName: "series_id"
           KeyType: "HASH"
         - AttributeName: "pen_name"
           KeyType: "RANGE"
       ProvisionedThroughput:
-        ReadCapacityUnits: "1"
-        WriteCapacityUnits: "1"
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
       TableName: "SeriesTable"
 
   SubscriptionTable:
@@ -202,20 +201,20 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "subscription_id"
           AttributeType: "S"
-        - AttributeName: "series_id"
-          AttributeType: "S"
-        - AttributeName: "entry_num"
-          AttributeType: "N"
         - AttributeName: "email"
           AttributeType: "S"
+#        - AttributeName: "series_id"
+#          AttributeType: "S"
+#        - AttributeName: "entry_num"
+#          AttributeType: "N"
       KeySchema:
         - AttributeName: "subscription_id"
           KeyType: "HASH"
         - AttributeName: "email"
           KeyType: "RANGE"
       ProvisionedThroughput:
-        ReadCapacityUnits: "1"
-        WriteCapacityUnits: "1"
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
       TableName: "SubscriptionTable"
 
 Outputs:
