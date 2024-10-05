@@ -217,6 +217,27 @@ Resources:
         WriteCapacityUnits: 1
       TableName: "SubscriptionTable"
 
+  TrtlpostCognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref TrtlpostCognitoUserPool
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+
+  TrtlpostCognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref TrtlpostCognitoUserPool
+      ClientName: !Ref TrtlpostCognitoUserPoolClient
+      GenerateSecret: false
+
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
