@@ -220,7 +220,7 @@ Resources:
   TrtlpostCognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: !Ref TrtlpostCognitoUserPool
+      UserPoolName: TrtlpostCognitoUserPool
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -235,10 +235,12 @@ Resources:
     Type: AWS::Cognito::UserPoolClient
     Properties:
       UserPoolId: !Ref TrtlpostCognitoUserPool
-      ClientName: !Ref TrtlpostCognitoUserPoolClient
+      ClientName: TrtlpostCognitoUserPoolClient
       GenerateSecret: false
-
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  UserPoolClient:
+    Description: "Client ID of Cognito User Pool Client"
+    Value: !GetAtt TrtlpostCognitoUserPoolClient.ClientId
